@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Virtual environment
+drpenv/
+venv/
+.env
+
+# MLflow
+mlartifacts/
+mlruns/
+*.db
+
+# Model artifacts
+artifacts/
+models/
+
+# Prometheus
+promotheus/
+prometheus/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log

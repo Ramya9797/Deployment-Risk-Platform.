@@ -1,0 +1,25 @@
+columns:
+
+  deployment_id: int
+
+  changed_files: int
+
+  failed_tests: int
+
+  test_coverage: int
+
+  infra_changes: int
+
+  database_changes: int
+
+  rollback_count: int
+
+  deployment_duration: int
+
+  developer_experience: int
+
+  environment: object
+
+  application: object
+
+  target: int

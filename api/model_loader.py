@@ -1,4 +1,3 @@
-import os
 import joblib
 
 _model = None
@@ -7,8 +6,7 @@ def get_model():
     global _model
 
     if _model is None:
-        model_path = os.path.join("model", "best_models.pkl")
-        _model = joblib.load(model_path)
+        _model = joblib.load("models/best_model.pkl")
 
     return _model
 

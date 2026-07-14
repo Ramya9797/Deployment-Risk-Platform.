@@ -80,7 +80,7 @@ pytz==2026.2
 PyYAML==6.0.3
 requests==2.34.2
 scikit-learn==1.9.0
-scipy==1.18.0
+scipy==1.16.3
 shap==0.52.0
 six==1.17.0
 skops==0.14.0

@@ -1,3 +1,4 @@
+import os
 import joblib
 import mlflow
 import mlflow.sklearn
@@ -11,63 +12,51 @@ class TrainingPipeline:
 
     def run(self):
 
-        mlflow.set_experiment(
-            "Deployment Risk Prediction"
-        )
+        # Create models folder
+        os.makedirs("models", exist_ok=True)
 
-        X_train,X_test,y_train,y_test = \
-            TrainingDataLoader().load()
+        # Use local MLflow tracking
+        mlflow.set_tracking_uri("file:./mlruns")
+        mlflow.set_experiment("Deployment Risk Prediction")
+
+        X_train, X_test, y_train, y_test = TrainingDataLoader().load()
 
         models = ModelTrainer().get_models()
 
         best_model = None
+        best_score = -1
 
-        best_score = 0
-
-        for name,model in models.items():
+        for name, model in models.items():
 
             with mlflow.start_run(run_name=name):
 
-                model.fit(X_train,y_train)
+                model.fit(X_train, y_train)
 
                 metrics = Evaluator().evaluate(
-
                     model,
-
                     X_test,
-
                     y_test
-
                 )
 
-                mlflow.log_params(
-
-                    model.get_params()
-
-                )
-
+                mlflow.log_params(model.get_params())
                 mlflow.log_metrics(metrics)
 
                 mlflow.sklearn.log_model(
-
-                    model,
-
-                    "model"
-
+                    sk_model=model,
+                    artifact_path="model"
                 )
 
                 if metrics["f1"] > best_score:
-
                     best_score = metrics["f1"]
-
                     best_model = model
 
-        joblib.dump(
+        # Save best model locally
+        joblib.dump(best_model, "models/best_model.pkl")
 
-            best_model,
+        print(f"Training completed.")
+        print(f"Best F1 Score: {best_score:.4f}")
+        print("Best model saved to models/best_model.pkl")
 
-            "models/best_model.pkl"
 
-        )
-
-        print("Training Completed")
+if __name__ == "__main__":
+    TrainingPipeline().run()

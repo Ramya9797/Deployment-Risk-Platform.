@@ -1,24 +1,30 @@
-import mlflow
-import mlflow.pyfunc
+import os
+import joblib
 from sklearn.datasets import load_breast_cancer
 
-# Connect to MLflow server
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
-# Load the model from the registry using the staging alias
-model = mlflow.pyfunc.load_model(
-    "models:/deployment-risk-model@staging"
-)
+MODEL_PATH = "models/best_model.pkl"
 
-# Load sample data
-data = load_breast_cancer()
-X = data.data
 
-# Predict the first five rows
-predictions = model.predict(X[:5])
+def test_model_exists():
 
-print("Actual labels:")
-print(data.target[:5])
+    assert os.path.exists(MODEL_PATH)
 
-print("Predictions:")
-print(predictions)
+
+def test_model_prediction():
+
+    model = joblib.load(MODEL_PATH)
+
+    data = load_breast_cancer()
+
+    X = data.data
+
+    predictions = model.predict(X[:5])
+
+    print("Actual labels:")
+    print(data.target[:5])
+
+    print("Predictions:")
+    print(predictions)
+
+    assert len(predictions) == 5

@@ -1,10 +1,17 @@
-import mlflow.pyfunc
+import joblib
+import os
 
+_model = None
 
 def get_model():
-    model = mlflow.pyfunc.load_model("./models/model")
-    return model
+    global _model
+
+    if _model is None:
+        model_path = os.path.join("models", "best_models.pkl")
+        _model = joblib.load(model_path)
+
+    return _model
 
 
 def get_model_version():
-    return "Production"
+    return "1.0"

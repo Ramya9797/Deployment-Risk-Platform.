@@ -1,0 +1,17 @@
+.git
+
+.github
+
+venv
+
+__pycache__
+
+*.pyc
+
+mlruns
+
+artifacts
+
+.ipynb_checkpoints
+
+.env

@@ -1,0 +1,57 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: fastapi-deployment
+# spec:
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: fastapi
+#   template:
+#     metadata:
+#       labels:
+#         app: fastapi
+#     spec:
+#       containers:
+#       - name: fastapi
+#         image: ramyaacr2026.azurecr.io/fastapi:v1
+#         imagePullPolicy: Always
+#         ports:
+#         - containerPort: 8000
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-risk-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: deployment-risk-platform
+  template:
+    metadata:
+      labels:
+        app: deployment-risk-platform
+    spec:
+      containers:
+      - name: deployment-risk-platform
+        image: ramyaacr2026dev.azurecr.io/deployment-risk-platform:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deployment-risk-platform-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: deployment-risk-platform
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
